@@ -20,23 +20,24 @@ const App = () => {
 
   useEffect(() => {
     toggleLoading();
-    if (imageName) {
-      imageApi
-        .fetchImageByQuery(imageName, page)
-        .then(data => {
-          if (data.total === 0) {
-            return Promise.reject(
-              new Error(`Sorry, we have no images with name ${imageName}.`)
-            );
-          }
-          setImages(state => [...state, ...data.hits]);
-          setIsLoadMoreShow(page < Math.ceil(data.total / imageApi.PER_PAGE));
-        })
-        .catch(error => handleError(error.message))
-        .finally(() => {
-          toggleLoading();
-        });
+    if (!imageName) {
+      return;
     }
+    imageApi
+      .fetchImageByQuery(imageName, page)
+      .then(data => {
+        if (data.total === 0) {
+          return Promise.reject(
+            new Error(`Sorry, we have no images with name ${imageName}.`)
+          );
+        }
+        setImages(state => [...state, ...data.hits]);
+        setIsLoadMoreShow(page < Math.ceil(data.total / imageApi.PER_PAGE));
+      })
+      .catch(error => handleError(error.message))
+      .finally(() => {
+        toggleLoading();
+      });
   }, [imageName, page]);
 
   const handleFormSubmit = imageName => {
