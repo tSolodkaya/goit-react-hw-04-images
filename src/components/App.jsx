@@ -19,10 +19,11 @@ const App = () => {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    toggleLoading();
     if (!imageName) {
       return;
     }
+    toggleLoading();
+
     imageApi
       .fetchImageByQuery(imageName, page)
       .then(data => {
