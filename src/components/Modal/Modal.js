@@ -6,23 +6,24 @@ import { createPortal } from 'react-dom';
 const modalRoot = document.querySelector('#modal-root');
 
 const Modal = ({ largeImageURL, tags, onClose }) => {
-  const handleKeyDown = e => {
-    if (e.code === 'Escape') {
-      onClose();
-    }
-  };
-
   const handleClick = e => {
     if (e.target.nodeName !== 'IMG') {
       onClose();
     }
   };
+
   useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.code === 'Escape') {
+        onClose();
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  });
+  }, [onClose]);
 
   return createPortal(
     <div className={css.Overlay} onClick={handleClick}>
